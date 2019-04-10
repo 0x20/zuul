@@ -1,0 +1,8 @@
+;; -*- scheme -*-
+
+(use-modules (ice-9 ftw))
+
+(add-to-load-path (dirname (current-filename)))
+(load "./common/scmlib.scm")
+(add-component-library-recursively "common/symbols")
+(source-library ".")

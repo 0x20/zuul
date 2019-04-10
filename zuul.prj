@@ -1,0 +1,4 @@
+method import
+schematics zuul.sch
+output-name zuul
+elements-dir common/footprints
