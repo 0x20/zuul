@@ -155,7 +155,7 @@ refdes=J1
 T 20600 -25100 5 10 0 0 0 0 1
 device=Raspberry Pi HAT
 T 20600 -24900 5 10 0 0 0 0 1
-footprint=connector(2, 20, spacing=100.0mil, sequence=pivot, silkmark=external, pin_clearance=20mil, pin_ringdia=60mil)
+footprint=connector(2, 20, spacing=100.0mil, sequence=pivot, silkmark=external, pin_clearance=10mil, pin_ringdia=60mil)
 }
 C 24500 -31100 1 0 0 5V-plus-1.sym
 C 24500 -35000 1 0 0 gnd-1.sym
