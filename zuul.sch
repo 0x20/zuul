@@ -8,18 +8,18 @@ device=dcdc_module
 T 13400 -32300 5 10 0 1 0 0 1
 footprint=DCDC_1
 }
-C 16900 -31000 1 270 0 capacitor-2.sym
+C 14600 -27900 1 270 0 capacitor-2.sym
 {
-T 17600 -31200 5 10 0 0 270 0 1
+T 15300 -28100 5 10 0 0 270 0 1
 device=POLARIZED_CAPACITOR
-T 17400 -31300 5 10 1 1 0 0 1
-refdes=C2
-T 17800 -31200 5 10 0 0 270 0 1
+T 15100 -28200 5 10 1 1 0 0 1
+refdes=C4
+T 15500 -28100 5 10 0 0 270 0 1
 symversion=0.1
-T 17400 -31700 5 10 1 1 0 0 1
+T 15100 -28600 5 10 1 1 0 0 1
 value=10uF
-T 16900 -31000 5 10 0 1 0 0 1
-footprint=1206
+T 14600 -27900 5 10 0 1 0 0 1
+footprint=LED1206
 }
 C 13300 -32000 1 90 0 capacitor-1.sym
 {
@@ -76,7 +76,7 @@ refdes=Z1
 T 12100 -31700 5 10 1 1 0 0 1
 value=12V
 T 12000 -32000 5 10 0 1 0 0 1
-footprint=ALF400
+footprint=alf(400mil, zener)
 }
 C 13300 -28300 1 0 0 gnd-1.sym
 C 13700 -27700 1 0 0 12V-plus-1.sym
@@ -100,7 +100,7 @@ refdes=F1
 T 11400 -31700 5 10 0 0 180 0 1
 symversion=0.1
 T 11600 -31100 5 10 0 1 0 0 1
-footprint=ACY200
+footprint=acy(200.00mil)
 }
 N 10700 -32000 13500 -32000 4
 N 10700 -32000 10700 -31600 4
@@ -126,7 +126,7 @@ device=CONNECTOR_8
 T 18900 -32800 5 10 1 1 0 6 1
 refdes=CONN3
 T 19000 -35400 5 10 1 1 0 0 1
-footprint=RJ45
+footprint=RJ45.fp
 }
 C 17400 -36800 1 180 0 5V-plus-1.sym
 C 16700 -34600 1 0 0 gnd-1.sym
@@ -134,17 +134,6 @@ C 16600 -34000 1 0 0 12V-plus-1.sym
 N 17300 -34000 16800 -34000 4
 N 17300 -34300 16800 -34300 4
 N 14700 -34900 17300 -34900 4
-C 14100 -35900 1 0 0 npn-3.sym
-{
-T 15000 -35400 5 10 0 0 0 0 1
-device=NPN_TRANSISTOR
-T 14300 -34900 5 10 1 1 0 0 1
-refdes=Q1
-T 14100 -35900 5 10 0 1 0 0 1
-footprint=TO92
-T 14300 -34700 5 10 1 1 0 0 1
-value=SS8050DTA
-}
 C 15300 -37100 1 0 0 gnd-1.sym
 N 15400 -36800 15400 -35800 4
 C 13000 -35500 1 0 0 resistor-1.sym
@@ -166,7 +155,7 @@ refdes=J1
 T 20600 -25100 5 10 0 0 0 0 1
 device=Raspberry Pi HAT
 T 20600 -24900 5 10 0 0 0 0 1
-footprint=HEADER20_2
+footprint=connector(2, 20, spacing=100.0mil, sequence=pivot, silkmark=external, pin_clearance=20mil, pin_ringdia=60mil)
 }
 C 24500 -31100 1 0 0 5V-plus-1.sym
 C 24500 -35000 1 0 0 gnd-1.sym
@@ -193,10 +182,10 @@ T 12200 -35400 5 10 1 1 0 0 1
 netname=OPEN
 }
 C 8900 -37600 0 0 0 title-bordered-A3.sym
-C 16900 -30800 1 0 0 5V-plus-1.sym
-C 17000 -32400 1 0 0 gnd-1.sym
-N 17100 -32100 17100 -31900 4
-N 17100 -31000 17100 -30800 4
+C 14600 -27700 1 0 0 5V-plus-1.sym
+C 14700 -29300 1 0 0 gnd-1.sym
+N 14800 -29000 14800 -28800 4
+N 14800 -27900 14800 -27700 4
 N 17200 -36800 17200 -35200 4
 C 17200 -36000 1 180 0 led-1.sym
 {
@@ -209,7 +198,7 @@ symversion=0.1
 T 15900 -36700 5 10 1 1 0 0 1
 comment=green
 T 17200 -36000 5 10 0 1 0 0 1
-footprint=SMD_DIODE 120 60
+footprint=LED1206
 }
 C 18400 -27600 1 0 0 led-1.sym
 {
@@ -220,7 +209,7 @@ refdes=LED1
 T 19200 -26800 5 10 0 0 0 0 1
 symversion=0.1
 T 18400 -27600 5 10 0 1 0 0 1
-footprint=SMD_DIODE 120 60
+footprint=LED1206
 }
 N 17300 -35200 17200 -35200 4
 C 16400 -35800 1 90 0 resistor-1.sym
@@ -244,7 +233,7 @@ refdes=LED2
 T 19200 -27500 5 10 0 0 0 0 1
 symversion=0.1
 T 18400 -28300 5 10 0 1 0 0 1
-footprint=SMD_DIODE 120 60
+footprint=LED1206
 }
 C 18200 -28000 1 180 0 resistor-1.sym
 {
@@ -299,7 +288,7 @@ symversion=0.1
 T 19200 -28600 5 10 1 1 0 0 1
 refdes=LED3
 T 18400 -29000 5 10 0 1 0 0 1
-footprint=SMD_DIODE 120 60
+footprint=LED1206
 }
 C 18400 -29700 1 0 0 led-1.sym
 {
@@ -310,7 +299,7 @@ symversion=0.1
 T 19200 -29300 5 10 1 1 0 0 1
 refdes=LED4
 T 18400 -29700 5 10 0 1 0 0 1
-footprint=SMD_DIODE 120 60
+footprint=LED1206
 }
 C 18200 -29400 1 180 0 resistor-1.sym
 {
@@ -339,7 +328,7 @@ N 18400 -28800 18200 -28800 4
 N 24100 -28700 25000 -28700 4
 {
 T 25000 -28700 5 10 1 1 0 6 1
-netname=RPI_OK
+netname=RPI OK
 }
 N 24100 -29000 25000 -29000 4
 {
@@ -358,3 +347,29 @@ netname=GSM OK
 }
 T 18500 -26800 9 12 1 0 0 0 1
 all green
+C 14100 -35900 1 0 0 npn-generic.sym
+{
+T 15000 -35400 5 10 0 0 0 0 1
+device=NPN_TRANSISTOR
+T 14200 -35000 5 10 1 1 0 0 1
+refdes=Q1
+T 14200 -34800 5 10 1 1 0 0 1
+comment=SS8050DTA
+T 14100 -35900 5 10 0 1 0 0 1
+slot=1
+T 14100 -35900 5 10 0 1 0 0 1
+footprint=TO92
+}
+C 14900 -31200 1 270 0 capacitor-2.sym
+{
+T 15600 -31400 5 10 0 0 270 0 1
+device=POLARIZED_CAPACITOR
+T 15400 -31500 5 10 1 1 0 0 1
+refdes=C2
+T 15800 -31400 5 10 0 0 270 0 1
+symversion=0.1
+T 15400 -31900 5 10 1 1 0 0 1
+value=10uF
+T 14900 -31200 5 10 0 1 0 0 1
+footprint=LED1206
+}

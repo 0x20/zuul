@@ -4,7 +4,7 @@ set -euo pipefail
 
 GERBER_OPTIONS=(
 	--copy-outline all
-	--name-style fixed
+	--name-style universal
 	--verbose
 )
 PNG_OPTIONS=(
@@ -18,7 +18,7 @@ BOARDS=(
 	zuul
 )
 
-VERSION=v2
+VERSION=v1
 
 function notify() {
 	echo "$(tput setf 10)$*$(tput op)"
@@ -52,11 +52,11 @@ for board in "${BOARDS[@]}"; do
 
 	# Export gerbers
 	notify "Exporting gerbers for $board"
-	pcb -x gerber \
+	pcb-rnd -x gerber \
 	    --gerberfile $export_path/$board \
 	    "${GERBER_OPTIONS[@]}" \
-	    $board.pcb
-	(cd "$export_path" && zip "../../${board}-${VERSION}.zip" *.*.*)
+	    $board.lht
+	(cd "$export_path" && zip "../../${board}-${VERSION}.zip" *.*.* *.*)
 
 	generate_gvp ${board} >$export_path/${board}.gvp
 
@@ -75,14 +75,14 @@ for board in "${BOARDS[@]}"; do
 
 	# Export pretty PNGs
 	notify "Exporting PNGs for $board"
-	pcb -x png \
+	pcb-rnd -x png \
 	    "${PNG_OPTIONS[@]}" \
 	    --outfile $export_path/${board}_front.png \
-	    $board.pcb
-	pcb -x png \
+	    $board.lht
+	pcb-rnd -x png \
 	    "${PNG_OPTIONS[@]}" \
 	    --photo-flip-x \
 	    --outfile $export_path/${board}_back.png \
-	    $board.pcb
+	    $board.lht
 
 done
