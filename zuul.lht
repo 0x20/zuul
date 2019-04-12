@@ -10214,13 +10214,13 @@ ha:pcb-rnd-board-v6 {
     ha:GND {
     li:conn { C1-1; C2-2; C3-1; C4-2; CONN1-2; CONN1-3; CONN2-1; CONN3-5; J1-6; J1-9; J1-14; J1-20; J1-25; J1-30; J1-34; J1-39; LED1-2; LED2-2; LED3-2; LED4-2; Q1-3; R7-2; U1-2; U1-4; Z1-1;    }
     }
-    {ha:GSM OK}                        {
+    {ha:GSM OK}                         {
     li:conn { J1-16; R4-2;    }
     }
     ha:OPEN {
     li:conn { J1-13; R6-1; R7-1;    }
     }
-    {ha:RPI OK}                        {
+    {ha:RPI OK}                         {
     li:conn { J1-15; R3-2;    }
     }
     ha:unnamed_net1 {
@@ -10360,7 +10360,7 @@ ha:pcb-rnd-board-v6 {
      ?../pcblib  
      ?~/pcblib/  
      $(rc.path.share)/pcblib  
-     /home/thequux/Projects/hardware/zuul/common/footprints  
+     ./common/footprints  
     }
    }
     ha:plugins {
