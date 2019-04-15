@@ -56,6 +56,8 @@ for board in "${BOARDS[@]}"; do
 	    --gerberfile $export_path/$board \
 	    "${GERBER_OPTIONS[@]}" \
 	    $board.lht
+	# Make sure that we don't have leftover files from an earlier version
+	[[ -f "gerbers/${board}-${VERSION}.zip" ]] && rm "gerbers/${board}-${VERSION}.zip"
 	(cd "$export_path" && zip "../../${board}-${VERSION}.zip" *.*.* *.*)
 
 	generate_gvp ${board} >$export_path/${board}.gvp
