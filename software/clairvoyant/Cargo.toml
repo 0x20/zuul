@@ -1,0 +1,12 @@
+[package]
+name = "clairvoyant"
+version = "0.1.0"
+authors = ["TQ Hirsch <thequux@thequux.com>"]
+edition = "2018"
+
+[dependencies]
+serial-unix = "0.4.0"
+serial = "0.4.0"
+structopt = "0.2.15"
+serde = {version = "1.0.90", features = ["serde_derive", "rc"] }
+toml = "0.5.0"
