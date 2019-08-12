@@ -1,8 +1,12 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use structopt::StructOpt;
 
-mod atparser;
+mod blink;
 mod config;
+mod event;
+mod mainloop;
+mod modem;
+mod whitelist;
 
 #[derive(StructOpt, Debug, Default)]
 struct Options {
@@ -20,6 +24,4 @@ struct Options {
 
 fn main() {
     let options: Options = StructOpt::from_args();
-
-    let modem = atparser::Modem::new(&options.modem_port);
 }
