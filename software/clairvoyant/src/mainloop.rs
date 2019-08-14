@@ -7,7 +7,7 @@ use slog::{warn, Logger};
 
 use crate::blink::Blinky;
 use crate::event::{Event, Regstate};
-use crate::whitelist::Whitelist;
+use crate::whitelist::{MatchContext, Whitelist};
 
 pub struct MainLoop<DP: OutputPin> {
     pub event_chan: Receiver<Event>,
@@ -64,5 +64,16 @@ impl<DP: OutputPin> MainLoop<DP> {
         }
     }
 
-    pub fn handle_call(&mut self, number: String) {}
+    pub fn handle_call(&mut self, number: String) {
+        use paho_mqtt::Message;
+        self.mqtt
+            .publish(Message::new("zuul/ring", number.as_bytes(), 0))
+            .ok();
+
+        if let Some(label) = self.whitelist.matches(&MatchContext::new(&number)) {
+            self.mqtt
+                .publish(Message::new("zuul/open", label.unwrap_or("anon"), 0))
+                .ok();
+        }
+    }
 }

@@ -10,13 +10,18 @@ pub struct Blinky<'a, Pin: OutputPin> {
     state: bool,
 }
 
-pub const PAT_ON: &[u8] = b"\xF0";
-pub const PAT_OFF: &[u8] = b"\x0F";
-pub const PAT_SLOW: &[u8] = b"\x55";
-pub const PAT_VSLOW: &[u8] = b"\xAA";
-pub const PAT_FAST: &[u8] = b"\x22";
-pub const PAT_HEARTBEAT: &[u8] = b"\x22\x26";
-pub const PAT_SOS: &[u8] = b"\x22\x22\x22\x62\x62\x62\x22\x22\x2C";
+#[allow(unused)]
+mod patterns {
+    pub const PAT_ON: &[u8] = b"\xF0";
+    pub const PAT_OFF: &[u8] = b"\x0F";
+    pub const PAT_SLOW: &[u8] = b"\x55";
+    pub const PAT_VSLOW: &[u8] = b"\xAA";
+    pub const PAT_FAST: &[u8] = b"\x22";
+    pub const PAT_HEARTBEAT: &[u8] = b"\x22\x26";
+    pub const PAT_SOS: &[u8] = b"\x22\x22\x22\x62\x62\x62\x22\x22\x2C";
+}
+
+pub use patterns::*;
 
 impl<'a, Pin: OutputPin> Blinky<'a, Pin> {
     pub fn new(pin: Pin, pattern: Cow<'a, [u8]>) -> Self {
@@ -46,9 +51,9 @@ impl<'a, Pin: OutputPin> Blinky<'a, Pin> {
         }
         if self.state != last_state {
             if self.state {
-                self.pin.set_high();
+                self.pin.set_high().ok();
             } else {
-                self.pin.set_low();
+                self.pin.set_low().ok();
             }
         }
         self.delay -= 1;

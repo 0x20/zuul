@@ -9,11 +9,11 @@ use regex::bytes::Regex;
 use serial::prelude::*;
 
 use crate::event::{Event, Regstate};
-use slog::{debug, error, info, warn, Logger};
+use slog::{debug, info, warn, Logger};
 use std::time::Duration;
 
 lazy_static! {
-    static ref CREG_RE: Regex = Regex::new(r"\+CREG: *(\d+)\r\n").unwrap();
+    static ref CREG_RE: Regex = Regex::new(r"\+CREG: *(?:\d*,)(\d+)\r\n").unwrap();
     static ref CLIP_RE: Regex = Regex::new(r#"\+CLIP: *"([^"]+)""#).unwrap();
     static ref CPIN_RE: Regex = Regex::new(r"\+CPIN: *([^\r\n]+)\r\n").unwrap();
 }
@@ -43,7 +43,7 @@ impl<PP: OutputPin + 'static> Modem<PP> {
             settings.set_parity(serial::ParityNone);
             settings.set_stop_bits(serial::Stop1);
             Ok(())
-        });
+        })?;
 
         Ok(Modem {
             port,
@@ -70,10 +70,10 @@ impl<PP: OutputPin + 'static> Modem<PP> {
 
     fn run(mut self) {
         // Start by making sure that the GSM is powered down, so we can power it up in a known state
-        self.pwr_gpio.set_low();
-        self.send_cmd(b"AT+CPOWD=1\n");
+        self.pwr_gpio.set_low().ok();
+        self.send_cmd(b"AT+CPOWD=1\n").unwrap();
         std::thread::sleep(Duration::from_secs(1));
-        self.pwr_gpio.set_high();
+        self.pwr_gpio.set_high().ok();
         let mut line = Vec::new();
         loop {
             // Wait for RDY
@@ -81,14 +81,17 @@ impl<PP: OutputPin + 'static> Modem<PP> {
             self.port
                 .read_until(0x0a, &mut line)
                 .expect("Failed to read data");
+            debug!(self.logger, "Received input"; "line" => String::from_utf8_lossy(&line));
+
             if line == b"RDY\r\n" {
-                self.pwr_gpio.set_low();
+                self.pwr_gpio.set_low().ok();
             } else if let Some(cpin) = Regex::captures(&CPIN_RE, &line) {
                 // PIN request
                 match &cpin[1] {
                     b"SIM PIN" => {
                         info!(self.logger, "Unlocking SIM");
-                        self.send_cmd(b"ATQ0V1E1+CREG=1;+CLIP=1;+CPIN=1111\n");
+                        self.send_cmd(b"ATQ0V1E1+CREG=1;+CLIP=1;+CPIN=1111\n")
+                            .unwrap();
                     }
                     b"READY" => {
                         info!(self.logger, "SIM unlocked");

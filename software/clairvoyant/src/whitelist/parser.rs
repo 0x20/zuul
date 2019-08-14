@@ -1,10 +1,12 @@
+//! Configuration format:
+//! Each label is
+
 use nom::{
     branch::*, bytes::complete::*, character::complete::space1, combinator::*, error::ParseError,
-    multi::*, sequence::*, Compare, IResult, InputTake, Needed,
+    multi::*, sequence::*, IResult,
 };
 
-use super::{Filter, FilterComponent};
-use crate::whitelist::Whitelist;
+use super::{Day, Filter, FilterComponent};
 use nom::character::complete::{char, one_of, space0};
 use nom::error::ErrorKind;
 
@@ -54,10 +56,16 @@ fn day_range<'a, Err: ParseError<&'a str>>(i: &'a str) -> IResult<&'a str, u8, E
 /// * Dutch two-letter abbrevs, plus "woe" and "vrij"
 fn day<'a, Err: ParseError<&'a str>>(i: &'a str) -> IResult<&'a str, u8, Err> {
     alt((
-        value(0x01, alt((tag("1"), tag_no_case("mon"), tag_no_case("ma")))),
-        value(0x02, alt((tag("2"), tag_no_case("tue"), tag_no_case("di")))),
         value(
-            0x04,
+            Day::MON,
+            alt((tag("1"), tag_no_case("mon"), tag_no_case("ma"))),
+        ),
+        value(
+            Day::TUE,
+            alt((tag("2"), tag_no_case("tue"), tag_no_case("di"))),
+        ),
+        value(
+            Day::WED,
             alt((
                 tag("3"),
                 tag_no_case("wed"),
@@ -65,9 +73,12 @@ fn day<'a, Err: ParseError<&'a str>>(i: &'a str) -> IResult<&'a str, u8, Err> {
                 tag_no_case("wo"),
             )),
         ),
-        value(0x08, alt((tag("4"), tag_no_case("thu"), tag_no_case("do")))),
         value(
-            0x10,
+            Day::THU,
+            alt((tag("4"), tag_no_case("thu"), tag_no_case("do"))),
+        ),
+        value(
+            Day::FRI,
             alt((
                 tag("5"),
                 tag_no_case("fri"),
@@ -76,8 +87,14 @@ fn day<'a, Err: ParseError<&'a str>>(i: &'a str) -> IResult<&'a str, u8, Err> {
                 tag_no_case("vr"),
             )),
         ),
-        value(0x20, alt((tag("6"), tag_no_case("sat"), tag_no_case("za")))),
-        value(0x40, alt((tag("7"), tag_no_case("sun"), tag_no_case("zo")))),
+        value(
+            Day::SAT,
+            alt((tag("6"), tag_no_case("sat"), tag_no_case("za"))),
+        ),
+        value(
+            Day::SUN,
+            alt((tag("7"), tag_no_case("sun"), tag_no_case("zo"))),
+        ),
     ))(i)
 }
 
@@ -141,17 +158,14 @@ pub fn eof<'a, Err: ParseError<&'a str>>(i: &'a str) -> IResult<&'a str, (), Err
     }
 }
 
-pub fn config<'a, Err: ParseError<&'a str>>(i: &'a str) -> IResult<&'a str, Whitelist, Err> {
-    map(
-        all_consuming(preceded(
-            many0(comment),
-            map(
-                many_till(terminated(rule, value((), many1(comment))), eof),
-                |(a, _)| a,
-            ),
-        )),
-        Whitelist,
-    )(i)
+pub fn config<'a, Err: ParseError<&'a str>>(i: &'a str) -> IResult<&'a str, Vec<Filter>, Err> {
+    all_consuming(preceded(
+        many0(comment),
+        map(
+            many_till(terminated(rule, value((), many1(comment))), eof),
+            |(a, _)| a,
+        ),
+    ))(i)
 }
 
 #[cfg(test)]
@@ -187,13 +201,13 @@ mod test {
                 "
             # preceding comment
             day thu time 18:00-24:00
-            number 12128675309 label Jenny # End-of-line comment
+            num 12128675309 label Jenny # End-of-line comment
             
             # line comment\n"
             ),
             Ok((
                 "",
-                Whitelist(vec![
+                vec![
                     Filter(vec![
                         FilterComponent::Day(0x08),
                         FilterComponent::Time {
@@ -205,7 +219,7 @@ mod test {
                         FilterComponent::Number("12128675309".to_string()),
                         FilterComponent::Label("Jenny".to_string()),
                     ])
-                ])
+                ]
             ))
         )
     }
